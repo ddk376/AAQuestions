@@ -20,7 +20,23 @@ class TableModel
     results.map { |result| self.new(result) }
   end
 
-  def method_missing(method_name, *args)
+  def self.where(params)
+    if opts.class.is_a?(String)
+      where_line = params
+    else
+      where_line = params.keys.map{|k| "#{k} = ?"}.join(" AND ")
+    end
+    results = DBConnection.instance.execute(<<-SQL)
+      SELECT
+        *
+      FROM
+        #{TABLES_HASH[self.to_s.to_sym]}
+      WHERE
+         #{where_line}
+    SQL
+  end
+
+  def self.method_missing(method_name, *args)
     method_name = method_name.to_s
     if method_name.start_with?("find_by_")
       attributes_string = method_name[("find_by_".length)..-1]
@@ -34,7 +50,7 @@ class TableModel
       attribute_names.length.times do |i|
         search_conditions[attribute_name[i]] = args[i]
       end
-      ## self.search search_conditions
+      self.where(search_conditions)
     else
       super
     end

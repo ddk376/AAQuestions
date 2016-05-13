@@ -11,9 +11,8 @@ the database into Ruby objects. Uses Heredocs to query in ruby.
 
 
 ## Bonus Implementations
-- [ ] ModelBase class that abstracts the common functionalities.
-- [ ] where accepts an options hash as an argument and searches the database for records
-      which match the criteria
+- [ ] ModelBase class that abstracts the common functionalities (need to finish update).
+- [x] where accepts an options hash as an argument and searches the database for records which match the criteria
       `Question.where({author_id: 2})`
-- [ ] overwrites `method_missing` to implement a dynamic `find_by`
-- [ ] where also accepts a string fragment which will be used to directly define WHERE statement in SQL query
+- [x] overwrites `method_missing` to implement a dynamic `find_by`
+- [x] where also accepts a string fragment which will be used to directly define WHERE statement in SQL query
