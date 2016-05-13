@@ -1,4 +1,8 @@
 require_relative 'questions_database'
+require_relative 'replies'
+require_relative 'users'
+require_relative 'questions'
+require_relative 'replies'
 class Reply < TableModel
 
   def self.find_by_user_id(user_id)
@@ -8,7 +12,7 @@ class Reply < TableModel
       FROM
         replies
       WHERE
-       replies.author_id = (?)
+       replies.author_id = (?);
     SQL
     results.map { |result| Reply.new(result) }
   end
@@ -54,7 +58,7 @@ class Reply < TableModel
       FROM
         replies
       WHERE
-       replies.parent_reply_id = (?)
+       replies.parent_reply_id = (?);
     SQL
 
     results.map { |result| Reply.new(result) }

@@ -20,8 +20,24 @@ class TableModel
     results.map { |result| self.new(result) }
   end
 
-  def method_missing
+  def method_missing(method_name, *args)
+    method_name = method_name.to_s
+    if method_name.start_with?("find_by_")
+      attributes_string = method_name[("find_by_".length)..-1]
+      attributes_names = attributes_string.split("_and_")
 
+      unless attribute_names.length == args.length
+        raise "unexpected # of arguments"
+      end
+
+      search_conditions = {}
+      attribute_names.length.times do |i|
+        search_conditions[attribute_name[i]] = args[i]
+      end
+      ## self.search search_conditions
+    else
+      super
+    end
   end
 
   def save

@@ -1,6 +1,10 @@
 require_relative 'questions_database'
-class User < TableModel
+require_relative 'questions'
+require_relative 'replies'
+require_relative 'question_follows'
+require_relative 'question_likes'
 
+class User < TableModel
   def self.find_by_name(fname, lname)
     results = QuestionsDatabase.instance.execute(<<-SQL, fname, lname)
       SELECT
@@ -40,7 +44,7 @@ class User < TableModel
   def average_karma
     results = QuestionsDatabase.instance.execute(<<-SQL, id)
       SELECT
-        CAST(COUNT(question_likes.id) AS FLOAT) / COUNT(questions.id) AS avg_likes_per_question
+        CAST(COUNT(question_likes.id) AS FLOAT) / COUNT(DISTINCT(questions.id)) AS avg_likes_per_question
       FROM
         questions
       LEFT OUTER JOIN

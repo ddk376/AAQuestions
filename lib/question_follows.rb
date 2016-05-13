@@ -1,4 +1,7 @@
 require_relative 'questions_database'
+require_relative 'users'
+require_relative 'questions'
+
 class QuestionFollow < TableModel
 
   def self.followers_for_question_id(question_id)
@@ -10,7 +13,7 @@ class QuestionFollow < TableModel
       JOIN
         users on question_follows.user_id = users.id
       WHERE
-        question_follows.question_id = (?)
+        question_follows.question_id = (?);
     SQL
 
     results.map { |result| User.new(result) }
@@ -25,7 +28,7 @@ class QuestionFollow < TableModel
       JOIN
         questions on question_follows.question_id = questions.id
       WHERE
-        question_follows.user_id = (?)
+        question_follows.user_id = (?);
     SQL
 
     results.map { |result| Question.new(result) }

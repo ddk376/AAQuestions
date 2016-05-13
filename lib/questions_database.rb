@@ -13,14 +13,6 @@ class QuestionsDatabase < SQLite3::Database
 end
 
 
-
-
-
-
-
-
-
-
 if __FILE__ == $PROGRAM_NAME
 
 

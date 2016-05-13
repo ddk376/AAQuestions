@@ -1,5 +1,10 @@
 require_relative 'model_base'
 require_relative 'questions_database'
+require_relative 'users'
+require_relative 'question_likes'
+require_relative 'question_follows'
+require_relative 'replies'
+
 class Question < TableModel
   def self.find_by_author_id(author_id)
     results = QuestionsDatabase.instance.execute(<<-SQL, author_id)
@@ -8,7 +13,7 @@ class Question < TableModel
       FROM
         questions
       WHERE
-        questions.author_id = (?)
+        questions.author_id = (?);
     SQL
 
     results.map! { |result| Question.new(result) }
