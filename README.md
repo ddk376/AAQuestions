@@ -3,6 +3,9 @@ Application that helps handle questions from students by overlaying Ruby code to
 the database into Ruby objects. Uses Heredocs to query in ruby.
 - Uses Singleton Module to create a single instance of a database connection
 
+## How to Use
+- in the command line run `./import_db.sh`
+
 ## Bonus Implementations
 - [ ] ModelBase class that abstracts the common functionalities.
 - [ ] where accepts an options hash as an argument and searches the database for records

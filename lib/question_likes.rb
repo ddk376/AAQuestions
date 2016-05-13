@@ -1,3 +1,4 @@
+require_relative 'questions_database'
 class QuestionLike < TableModel
 
   def self.likers_for_question_id(question_id)

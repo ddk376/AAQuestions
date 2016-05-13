@@ -1,3 +1,4 @@
+require_relative 'questions_database'
 class QuestionFollow < TableModel
 
   def self.followers_for_question_id(question_id)

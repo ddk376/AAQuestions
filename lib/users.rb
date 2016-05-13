@@ -1,3 +1,4 @@
+require_relative 'questions_database'
 class User < TableModel
 
   def self.find_by_name(fname, lname)

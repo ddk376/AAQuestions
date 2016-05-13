@@ -1,5 +1,5 @@
 require_relative 'model_base'
-
+require_relative 'questions_database'
 class Question < TableModel
   def self.find_by_author_id(author_id)
     results = QuestionsDatabase.instance.execute(<<-SQL, author_id)

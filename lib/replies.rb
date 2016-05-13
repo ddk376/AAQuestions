@@ -1,3 +1,4 @@
+require_relative 'questions_database'
 class Reply < TableModel
 
   def self.find_by_user_id(user_id)
