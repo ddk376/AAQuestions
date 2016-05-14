@@ -21,8 +21,6 @@ class TableModel
   end
 
   def self.where(params, *args)
-    p params
-    p *args
     if params.is_a?(String)
       where_line = params
       results = QuestionsDatabase.instance.execute(<<-SQL, *args)
@@ -35,7 +33,7 @@ class TableModel
       SQL
     else
       where_line = params.keys.map{|k| "#{k} = ?"}.join(" AND ")
-      results = QuestionsDatabase.instance.execute(<<-SQL)
+      results = QuestionsDatabase.instance.execute(<<-SQL, *params.values)
         SELECT
           *
         FROM

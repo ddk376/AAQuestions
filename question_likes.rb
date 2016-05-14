@@ -1,6 +1,5 @@
 require_relative 'questions_database'
 class QuestionLike < TableModel
-
   def self.likers_for_question_id(question_id)
     results = QuestionsDatabase.instance.execute(<<-SQL, question_id)
       SELECT
@@ -82,4 +81,9 @@ class QuestionLike < TableModel
     @question_id = opts["question_id"]
     @user_id = opts["user_id"]
   end
+end
+
+
+if __FILE__ == $PROGRAM_NAME
+
 end

@@ -62,3 +62,7 @@ class QuestionFollow < TableModel
     @user_id = opts["user_id"]
   end
 end
+
+if __FILE__ == $PROGRAM_NAME
+
+end

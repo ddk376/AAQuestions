@@ -86,4 +86,6 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   p Question.where("id = ?", 1 )
+  p Question.where(id: 1, body: 'What day is today?')
+  p Question.find_by_body('What day is today?')
 end
