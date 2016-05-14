@@ -5,14 +5,15 @@ the database into Ruby objects. Uses Heredocs to query in ruby.
 - Demonstrates complex queries which will also lead to further abstraction of the ORM in the ActiveRecordLite project []
 - can update and save records through the AA Questions API to query into the database
 - Optimizes N+1 queries for   `User#average_karma` which computes the avg number of likes for a `User`'s questions
+- Uses meta-programming `Object#instance_variables` and `::send` to abstract common functionalities
 
 ## How to Use
 - in the command line run `cat import_db.sql | sqlite3 questions.db` to setup the database
 
 
 ## Bonus Implementations
-- [ ] ModelBase class that abstracts the common functionalities (need to finish update).
-- [x] where accepts an options hash as an argument and searches the database for records which match the criteria
+- [x] ModelBase class that abstracts the common functionalities
+- [x] `::where` accepts an options hash as an argument and searches the database for records which match the criteria
       `Question.where({author_id: 2})`
 - [x] overwrites `method_missing` to implement a dynamic `find_by`
 - [x] where also accepts a string fragment which will be used to directly define WHERE statement in SQL query

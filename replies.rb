@@ -32,11 +32,11 @@ class Reply < TableModel
   attr_accessor :id, :body, :question_id, :parent_reply_id, :author_id
 
   def initialize(opts = {})
-    @id = opts["id"]
-    @body = opts["body"]
-    @question_id = opts["question_id"]
-    @parent_reply_id = opts["parent_reply_id"]
-    @author_id = opts["author_id"]
+    @id = opts[:id] || opts['id']
+    @body = opts[:body] || opts['body']
+    @question_id = opts[:question_id] || opts['question_id']
+    @parent_reply_id = opts[:parent_reply_id] || opts['parent_reply_id']
+    @author_id = opts[:author_id] || opts['author_id']
   end
 
   def author

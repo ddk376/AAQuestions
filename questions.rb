@@ -30,10 +30,10 @@ class Question < TableModel
   attr_accessor :id, :title, :body, :author_id
 
   def initialize(opts = {})
-    @id = opts["id"]
-    @title = opts["title"]
-    @body = opts["body"]
-    @author_id = opts["author_id"]
+    @id = opts[:id] || opts['id']
+    @title = opts[:title] || opts['title']
+    @body = opts[:body] || opts['body']
+    @author_id = opts[:author_id] || opts['author_id']
   end
 
   def author
@@ -56,36 +56,45 @@ class Question < TableModel
     QuestionLike.num_likes_for_question_id(id)
   end
 
-  def save
-    if id.nil?
-     QuestionsDatabase.instance.execute(<<-SQL, title, body, author_id)
-       INSERT INTO
-        questions(title, body, author_id)
-       VALUES
-        (?,?,?)
-       SQL
-
-      @id = QuestionsDatabase.instance.last_insert_row_id
-    else
-      QuestionsDatabase.instance.execute(<<-SQL,title, body, author_id, id)
-       UPDATE
-         questions
-       SET
-         title = (?),
-         body = (?),
-         author_id = (?)
-       WHERE
-         id = (?)
-       SQL
-    end
-  end
+  # def save
+  #   if id.nil?
+  #    QuestionsDatabase.instance.execute(<<-SQL, title, body, author_id)
+  #      INSERT INTO
+  #       questions(title, body, author_id)
+  #      VALUES
+  #       (?,?,?)
+  #      SQL
+  #
+  #     @id = QuestionsDatabase.instance.last_insert_row_id
+  #   else
+  #     QuestionsDatabase.instance.execute(<<-SQL,title, body, author_id, id)
+  #      UPDATE
+  #        questions
+  #      SET
+  #        title = (?),
+  #        body = (?),
+  #        author_id = (?)
+  #      WHERE
+  #        id = (?)
+  #      SQL
+  #   end
+  # end
 
 
 end
 
 
 if __FILE__ == $PROGRAM_NAME
-  p Question.where("id = ?", 1 )
-  p Question.where(id: 1, body: 'What day is today?')
-  p Question.find_by_body('What day is today?')
+  # p Question.where("id = ?", 1 )
+  # p Question.where(id: 1, body: 'What day is today?')
+  # p Question.find_by_body('What day is today?')
+  # q = Question.new(title: "howdy", body: "what's up", author_id: 1)
+  # q.save
+  r = Question.new({"title" => "wow", "body" => "jslkfjlds", "author_id" => 2})
+  r.save
+  r.body = "changed body"
+  r.save
+  r.title = "New title"
+  r.save
+  p r.title
 end

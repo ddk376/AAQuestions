@@ -57,9 +57,9 @@ class QuestionFollow < TableModel
   attr_accessor :id, :question_id, :user_id
 
   def initialize(opts = {})
-    @id = opts["id"]
-    @question_id = opts["question_id"]
-    @user_id = opts["user_id"]
+    @id = opts[:id] || opts['id']
+    @question_id = opts[:question_id] || opts['question_id']
+    @user_id = opts[:user_id] || opts['user_id']
   end
 end
 

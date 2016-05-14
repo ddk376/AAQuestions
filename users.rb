@@ -20,9 +20,9 @@ class User < TableModel
   attr_accessor :id, :fname, :lname
 
   def initialize(opts = {})
-    @id = opts["id"]
-    @fname = opts["fname"]
-    @lname = opts["lname"]
+    @id = opts[:id] || opts['id']
+    @fname = opts[:fname] || opts['fname']
+    @lname = opts[:lname] || opts['lname']
   end
 
   def authored_questions

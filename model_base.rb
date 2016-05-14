@@ -69,29 +69,50 @@ class TableModel
     if id.nil?
       create
     else
+      update
     end
   end
 
-  # def create
-  #   raise "You already exist!" unless id.nil?
-  #   columns = self.instance_variables.map do |var|
-  #     length = var.length
-  #     var.to_s[1,length -1]
-  #   end
-  #
-  #   columns = columns.select { |col| col != "id" }
-  #
-  #   values = []
-  #
-  #   columns_proc = columns.map { |col| Proc.new {self".#{col}"} }
-  #
-  #   columns_proc.each { |prc| values << prc.call }
-  #
-  #   QuestionsDatabase.instance.execute(<<-SQL)
-  #     INSERT INTO
-  #       #{TABLES_HASH[self.class.to_s.to_sym]}(#{columns.join(",")})
-  #     VALUES
-  #       (#{values.join(",")})
-  #   SQL
-  # end
+  def create
+    raise "You already exist!" unless id.nil?
+    columns = self.instance_variables.drop(1).map do |var|
+      length = var.length
+      var.to_s[1..length -1]
+    end
+
+    values = []
+    columns.each {|name| values << self.send(name)}
+    val = values.map{ "?" }
+
+    QuestionsDatabase.instance.execute(<<-SQL, *values)
+      INSERT INTO
+        #{TABLES_HASH[self.class.to_s.to_sym]}(#{columns.join(",")})
+      VALUES
+        (#{val.join(", ")})
+    SQL
+
+    @id = QuestionsDatabase.instance.last_insert_row_id
+  end
+
+  def update
+    p self.id
+    columns = self.instance_variables.drop(1).map do |var|
+      length = var.length
+      var.to_s[1..length -1]
+    end
+
+    values = []
+    columns.each {|name| values << self.send(name)}
+    set_clause = columns.join(" = (?), ")
+    set_clause += " = (?)"
+
+    QuestionsDatabase.instance.execute(<<-SQL, *values, self.id)
+      UPDATE
+        #{TABLES_HASH[self.class.to_s.to_sym]}
+      SET
+          #{set_clause}
+      WHERE
+        id = (?)
+    SQL
+  end
 end
