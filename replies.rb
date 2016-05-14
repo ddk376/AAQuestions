@@ -63,30 +63,4 @@ class Reply < TableModel
 
     results.map { |result| Reply.new(result) }
   end
-
-  # def save
-  #   if id.nil?
-  #    QuestionsDatabase.instance.execute(<<-SQL, body, question_id,parent_reply_id,author_id)
-  #      INSERT INTO
-  #       replies(body, question_id,parent_reply_id,author_id)
-  #      VALUES
-  #       (?,?,?,?)
-  #      SQL
-  #
-  #     @id = QuestionsDatabase.instance.last_insert_row_id
-  #   else
-  #     QuestionsDatabase.instance.execute(<<-SQL, body, question_id,parent_reply_id,author_id, id)
-  #       UPDATE
-  #         replies
-  #       SET
-  #         body = (?),
-  #         question_id = (?),
-  #         parent_reply_id = (?),
-  #         author_id = (?)
-  #       WHERE
-  #         id = (?)
-  #     SQL
-  #   end
-  # end
-
 end
