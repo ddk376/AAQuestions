@@ -82,3 +82,8 @@ class Question < TableModel
 
 
 end
+
+
+if __FILE__ == $PROGRAM_NAME
+  p Question.where("id = ?", 1 )
+end

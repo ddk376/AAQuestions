@@ -7,7 +7,7 @@ the database into Ruby objects. Uses Heredocs to query in ruby.
 - Optimizes N+1 queries for   `User#average_karma` which computes the avg number of likes for a `User`'s questions
 
 ## How to Use
-- in the command line run `./import_db.sh` to setup the database
+- in the command line run `cat import_db.sql | sqlite3 questions.db` to setup the database
 
 
 ## Bonus Implementations

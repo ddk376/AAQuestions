@@ -20,20 +20,31 @@ class TableModel
     results.map { |result| self.new(result) }
   end
 
-  def self.where(params)
-    if opts.class.is_a?(String)
+  def self.where(params, *args)
+    p params
+    p *args
+    if params.is_a?(String)
       where_line = params
+      results = QuestionsDatabase.instance.execute(<<-SQL, *args)
+        SELECT
+          *
+        FROM
+          #{TABLES_HASH[self.to_s.to_sym]}
+        WHERE
+           #{where_line}
+      SQL
     else
       where_line = params.keys.map{|k| "#{k} = ?"}.join(" AND ")
+      results = QuestionsDatabase.instance.execute(<<-SQL)
+        SELECT
+          *
+        FROM
+          #{TABLES_HASH[self.to_s.to_sym]}
+        WHERE
+           #{where_line}
+      SQL
     end
-    results = DBConnection.instance.execute(<<-SQL)
-      SELECT
-        *
-      FROM
-        #{TABLES_HASH[self.to_s.to_sym]}
-      WHERE
-         #{where_line}
-    SQL
+    results.map{ |result| self.new(result)}
   end
 
   def self.method_missing(method_name, *args)
@@ -63,26 +74,26 @@ class TableModel
     end
   end
 
-  def create
-    raise "You already exist!" unless id.nil?
-    columns = self.instance_variables.map do |var|
-      length = var.length
-      var.to_s[1,length -1]
-    end
-
-    columns = columns.select { |col| col != "id" }
-
-    values = []
-
-    columns_proc = columns.map { |col| Proc.new {self".#{col}"} }
-
-    columns_proc.each { |prc| values << prc.call }
-
-    QuestionsDatabase.instance.execute(<<-SQL)
-      INSERT INTO
-        #{TABLES_HASH[self.class.to_s.to_sym]}(#{columns.join(",")})
-      VALUES
-        (#{values.join(",")})
-    SQL
-  end
+  # def create
+  #   raise "You already exist!" unless id.nil?
+  #   columns = self.instance_variables.map do |var|
+  #     length = var.length
+  #     var.to_s[1,length -1]
+  #   end
+  #
+  #   columns = columns.select { |col| col != "id" }
+  #
+  #   values = []
+  #
+  #   columns_proc = columns.map { |col| Proc.new {self".#{col}"} }
+  #
+  #   columns_proc.each { |prc| values << prc.call }
+  #
+  #   QuestionsDatabase.instance.execute(<<-SQL)
+  #     INSERT INTO
+  #       #{TABLES_HASH[self.class.to_s.to_sym]}(#{columns.join(",")})
+  #     VALUES
+  #       (#{values.join(",")})
+  #   SQL
+  # end
 end
