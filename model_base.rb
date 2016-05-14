@@ -51,13 +51,13 @@ class TableModel
       attributes_string = method_name[("find_by_".length)..-1]
       attributes_names = attributes_string.split("_and_")
 
-      unless attribute_names.length == args.length
+      unless attributes_names.length == args.length
         raise "unexpected # of arguments"
       end
 
       search_conditions = {}
-      attribute_names.length.times do |i|
-        search_conditions[attribute_name[i]] = args[i]
+      attributes_names.length.times do |i|
+        search_conditions[attributes_names[i]] = args[i]
       end
       self.where(search_conditions)
     else
